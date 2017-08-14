@@ -38,8 +38,15 @@ UserSchema.methods.generateJWT = function(){
 UserSchema.methods.toAuthJSON = function(){
     return {
         username: this.username,
-        image: this.image,
+        image: this.image || 'https://res.cloudinary.com/unimemo-dfd94/image/upload/v1500289994/c6zgp0zjykx6t4uxva19.jpg',
         token: this.generateJWT()
+    }
+}
+
+UserSchema.methods.toProfileJSONFor = function(){
+    return {
+        username: this.username,
+        image: this.image || 'https://res.cloudinary.com/unimemo-dfd94/image/upload/v1500289994/c6zgp0zjykx6t4uxva19.jpg'
     }
 }
 
