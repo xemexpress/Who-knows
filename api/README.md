@@ -136,11 +136,11 @@ If a request fails any validations, expect a 422 and errors in the following for
 
 #### Other status codes:
 
-401 for Unauthorized articles, when a article requires authentication but it isn't provided
+401 for Unauthorized requests, when a request requires authentication but it isn't provided
 
-403 for Forbidden articles, when a article may be valid but the user doesn't have permissions to perform the action
+403 for Forbidden requests, when a request may be valid but the user doesn't have permissions to perform the action
 
-404 for Not found articles, when a resource can't be found to fulfill the article
+404 for Not found requests, when a resource can't be found to fulfill the request
 
 
 ## Endpoints:
@@ -149,7 +149,7 @@ If a request fails any validations, expect a 422 and errors in the following for
 
 `POST /api/users/login`
 
-Example article body:
+Example request body:
 ```JSON
 {
   "user":{
@@ -167,7 +167,7 @@ Required fields: `username`, `password`
 
 `POST /api/users`
 
-Example article body:
+Example request body:
 ```JSON
 {
   "user":{
@@ -191,7 +191,7 @@ Authentication required, returns a [User](#users-for-authentication) that's the 
 
 `PUT /api/user`
 
-Example article body:
+Example request body:
 ```JSON
 {
   "user":{
@@ -231,7 +231,7 @@ Authentication optional, returns [single Article](#single-article)
 
 `POST /api/articles`
 
-Example article body:
+Example request body:
 
 ```JSON
 {
@@ -254,7 +254,7 @@ Required fields: `title`, `body`
 
 `PUT /api/articles/:slug`
 
-Example article body:
+Example request body:
 
 ```JSON
 {
@@ -284,7 +284,7 @@ No authentication required, returns [multiple Comments](#multiple-comments)
 
 `POST /api/articles/:slug/comments`
 
-Example article body:
+Example request body:
 
 ```JSON
 {
