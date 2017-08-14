@@ -1,4 +1,4 @@
-# UniMemo Blog API Spec
+# Blog API Spec
 
 ### Authentication Header:
 
@@ -154,7 +154,7 @@ Example request body:
 {
   "user":{
     "username": "Jason",
-    "password": "unimemo"
+    "password": "password"
   }
 }
 ```
@@ -172,7 +172,7 @@ Example request body:
 {
   "user":{
     "username": "Jason",
-    "password": "unimemo"
+    "password": "password"
   }
 }
 ```
@@ -237,16 +237,12 @@ Example request body:
 {
   "article": {
     "title": "How to live in the Sea of Palaces",
-    "body": "Mark two points on a paper, and connect them.",
-    "author": {
-      "username": "Jason",
-      "image": "https://res.cloudinary.com/unimemo-dfd94/image/upload/v1500289994/c6zgp0zjykx6t4uxva19.jpg"
-    }
+    "body": "Mark two points on a paper, and connect them."
   }
 }
 ```
 
-Authentication required, returns the [Article](#single-article)
+Authentication (Admin) required, returns the [Article](#single-article)
 
 Required fields: `title`, `body`
 
@@ -264,7 +260,7 @@ Example request body:
 }
 ```
 
-Authentication required, returns the updated [Article](#single-article)
+Authentication (Admin) required, returns the updated [Article](#single-article)
 
 Optional fields: `title`, `body`
 
@@ -272,7 +268,7 @@ Optional fields: `title`, `body`
 
 `DELETE /api/articles/:slug`
 
-Authentication required, returns {}
+Authentication (Admin) required, returns {}
 
 ### Get Comments from an Article
 
@@ -302,7 +298,7 @@ Required fields: `body`
 
 `PUT /api/articles/:slug/comments/:id`
 
-Example comment body:
+Example request body:
 
 ```JSON
 {
