@@ -205,6 +205,12 @@ Authentication required, returns the [User](#users-for-authentication)
 
 Optional fields: `password`, `image`
 
+### Get Profile
+
+`GET /api/profiles/:username`
+
+No authentication required, returns the [Profile](#profile)
+
 ### List Articles
 
 `GET /api/articles`
