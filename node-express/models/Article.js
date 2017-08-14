@@ -6,6 +6,7 @@ var ArticleSchema = new mongoose.Schema({
     slug: { type: String, unique: true, lowercase: true },
     title: String,
     body: String,
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true })
 

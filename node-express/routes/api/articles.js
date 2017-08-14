@@ -3,6 +3,7 @@ var passport = require('passport')
 var mongoose = require('mongoose')
 var Article = mongoose.model('Article')
 var User = mongoose.model('User')
+var Comment = mongoose.model('Comment')
 var auth = require('../auth')
 
 // Preload article
@@ -13,6 +14,19 @@ router.param('article', function(req, res, next, slug){
             if(!article){ return res.sendStatus(404) }
 
             req.article = article
+
+            return next()
+        }).catch(next)
+})
+
+// Preload comment
+router.param('comment', function(req, res, next, id){
+    Comment.findById(id)
+        .populate('author')
+        .then(function(comment){
+            if(!comment){ return res.sendStatus(404) }
+
+            req.comment = comment
 
             return next()
         }).catch(next)
@@ -44,23 +58,21 @@ router.post('/', auth.required, function(req, res, next){
 
 // Update article (admin)
 router.put('/:article', auth.required, function(req, res, next){
-    User.findById(req.payload.id).then(function(user){
-        if(req.article.author._id.toString() === req.payload.id.toString()){
-            if(typeof req.body.article.title !== 'undefined'){
-                req.article.title = req.body.article.title
-            }
-
-            if(typeof req.body.article.body !== 'undefined'){
-                req.article.body = req.body.article.body
-            }
-
-            req.article.save().then(function(article){
-                return res.json({ article: article.toJSONFor() })
-            }).catch(next)
-        }else{
-            return res.sendStatus(403)
+    if(req.article.author._id.toString() === req.payload.id.toString()){
+        if(typeof req.body.article.title !== 'undefined'){
+            req.article.title = req.body.article.title
         }
-    })
+
+        if(typeof req.body.article.body !== 'undefined'){
+            req.article.body = req.body.article.body
+        }
+
+        req.article.save().then(function(article){
+            return res.json({ article: article.toJSONFor() })
+        }).catch(next)
+    }else{
+        return res.sendStatus(403)
+    }
 })
 
 // Delete article (admin)
@@ -73,7 +85,75 @@ router.delete('/:article', auth.required, function(req, res, next){
         }else{
             return res.sendStatus(403)
         }
-    })
+    }).catch(next)
+})
+
+// List comments
+router.get('/:article/comments', auth.optional, function(req, res, next){
+    req.article.populate({
+        path: 'comments',
+        populate: {
+            path: 'author'
+        },
+        options: {
+            sort: {
+                createdAt: 'desc'
+            }
+        }
+    }).execPopulate().then(function(){
+        return res.json({ comments: req.article.comments.map(function(comment){
+            return comment.toJSONFor()
+        })})
+    }).catch(next)
+})
+
+// Create comment
+router.post('/:article/comments', auth.required, function(req, res, next){
+    User.findById(req.payload.id).then(function(user){
+        if(!user){ return res.sendStatus(401) }
+
+        var comment = new Comment(req.body.comment)
+        comment.article = req.article
+        comment.author = user
+
+        return comment.save().then(function(){
+            req.article.comments.push(comment)
+
+            return req.article.save().then(function(){
+                return res.json({ comment: comment.toJSONFor() })
+            })
+        })
+    }).catch(next)
+})
+
+// Update comment
+router.put('/:article/comments/:comment', auth.required, function(req, res, next){
+    if(req.comment.author._id.toString() === req.payload.id.toString()){
+        if(typeof req.body.comment.body !== 'undefined'){
+            req.comment.body = req.body.comment.body
+        }
+
+        req.comment.save().then(function(comment){
+            return res.json({ comment: comment.toJSONFor() })
+        }).catch(next)
+    }else{
+        return res.sendStatus(403)
+    }
+})
+
+// Delete comment
+router.delete('/:article/comments/:comment', auth.required, function(req, res, next){
+    // author is not populated yet, hence it's still an ObjectId
+    if(req.comment.author.toString() === req.payload.id.toString()){
+        req.article.comments.remove(req.comment._id)
+        req.article.save()
+            .then(Comment.find({ _id: req.comment._id }).remove().exec())
+            .then(function(){
+                return res.sendStatus(204)
+            })
+    }else{
+        return res.sendStatus(403)
+    }
 })
 
 module.exports = router
