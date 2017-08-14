@@ -32,6 +32,40 @@ router.param('comment', function(req, res, next, id){
         }).catch(next)
 })
 
+// List articles
+router.get('/', auth.optional, function(req, res, next){
+    var limit = 10
+    var offset = 0
+
+    if(typeof req.query.limit !== 'undefined'){
+        limit = req.query.limit
+    }
+
+    if(typeof req.query.offset !== 'undefined'){
+        offset = req.query.offset
+    }
+
+    return Promise.all([
+        Article.find()
+            .limit(Number(limit))
+            .skip(Number(offset))
+            .sort({ createdAt: 'desc'})
+            .populate('author')
+            .exec(),
+        Article.count().exec()
+    ]).then(function(results){
+        var articles = results[0]
+        var articlesCount = results[1]
+
+        return res.json({
+            articles: articles.map(function(article){
+                return article.toJSONFor()
+            }),
+            articlesCount: articlesCount
+        })
+    }).catch(next)
+})
+
 // Read article
 router.get('/:article', auth.optional, function(req, res, next){
     req.article.execPopulate().then(function(){
