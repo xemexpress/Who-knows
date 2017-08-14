@@ -20,7 +20,8 @@ var auth = {
         userProperty: 'payload',
         credentialsRequired: false,
         getToken: getTokenFromHeader
-    })
+    }),
+    admin: ['testtest']
 }
 
 module.exports = auth
