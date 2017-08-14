@@ -316,7 +316,7 @@ Example request body:
 
 Authentication required, returns the updated [Comment](#single-comment)
 
-Optional fields: `body`
+Optional field: `body`
 
 ### Delete Comment
 
