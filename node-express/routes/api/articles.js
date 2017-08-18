@@ -34,6 +34,7 @@ router.param('comment', function(req, res, next, id){
 
 // List articles
 router.get('/', auth.optional, function(req, res, next){
+    var query = {}
     var limit = 10
     var offset = 0
 
@@ -44,24 +45,34 @@ router.get('/', auth.optional, function(req, res, next){
     if(typeof req.query.offset !== 'undefined'){
         offset = req.query.offset
     }
-
-    return Promise.all([
-        Article.find()
-            .limit(Number(limit))
-            .skip(Number(offset))
-            .sort({ createdAt: 'desc'})
-            .populate('author')
-            .exec(),
-        Article.count().exec()
+        
+    Promise.all([
+        req.query.author ? User.findOne({ username: req.query.author }) : null
     ]).then(function(results){
-        var articles = results[0]
-        var articlesCount = results[1]
+        var author = results[0]
 
-        return res.json({
-            articles: articles.map(function(article){
-                return article.toJSONFor()
-            }),
-            articlesCount: articlesCount
+        if(author){
+            query.author = author._id
+        }
+
+        return Promise.all([
+            Article.find(query)
+                .limit(Number(limit))
+                .skip(Number(offset))
+                .sort({ createdAt: 'desc'})
+                .populate('author')
+                .exec(),
+            Article.count(query).exec()
+        ]).then(function(results){
+            var articles = results[0]
+            var articlesCount = results[1]
+    
+            return res.json({
+                articles: articles.map(function(article){
+                    return article.toJSONFor()
+                }),
+                articlesCount: articlesCount
+            })
         })
     }).catch(next)
 })
@@ -131,7 +142,7 @@ router.get('/:article/comments', auth.optional, function(req, res, next){
         },
         options: {
             sort: {
-                createdAt: 'desc'
+                createdAt: 'asc'
             }
         }
     }).execPopulate().then(function(){
@@ -178,7 +189,7 @@ router.put('/:article/comments/:comment', auth.required, function(req, res, next
 // Delete comment
 router.delete('/:article/comments/:comment', auth.required, function(req, res, next){
     // author is not populated yet, hence it's still an ObjectId
-    if(req.comment.author.toString() === req.payload.id.toString()){
+    if(req.comment.author._id.toString() === req.payload.id.toString()){
         req.article.comments.remove(req.comment._id)
         req.article.save()
             .then(Comment.find({ _id: req.comment._id }).remove().exec())

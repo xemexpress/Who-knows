@@ -217,6 +217,10 @@ No authentication required, returns the [Profile](#profile)
 
 Query Parameters:
 
+Filter by `author`:
+
+`?author=Jason`
+
 Limit number of articles (default is 10):
 
 `?limit=10`
