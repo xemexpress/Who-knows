@@ -15,7 +15,7 @@ ArticleSchema.plugin(uniqueValidator, { message: 'is already taken' })
 ArticleSchema.methods.slugify = function(){
     this.slug = slug(this.title)
     if(this.slug === ''){
-        this.slug = slug(encodeURIComponent(this.title))
+        this.slug = this.title
     }
 }
 
