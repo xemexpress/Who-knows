@@ -5,6 +5,11 @@ import { connect } from 'react-redux'
 import Header from './Header'
 import agent from '../agent'
 
+import {
+    APP_LOAD,
+    REDIRECT
+} from '../constants'
+
 const mapStateToProps = state => ({
     appLoaded: state.common.appLoaded,
     appName: state.common.appName,
@@ -14,12 +19,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onLoad: (payload, token) => dispatch({
-        type: 'APP_LOAD',
+        type: APP_LOAD,
         payload,
         token
     }),
     onRedirect: () => dispatch({
-        type: 'REDIRECT'
+        type: REDIRECT
     })
 })
 

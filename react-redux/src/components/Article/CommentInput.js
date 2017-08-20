@@ -4,9 +4,13 @@ import { connect } from 'react-redux'
 import ListErrors from '../ListErrors'
 import agent from '../../agent'
 
+import {
+    ADD_COMMENT
+} from '../../constants'
+
 const mapDispatchToProps = dispatch => ({
     onSubmit: payload => dispatch({
-        type: 'ADD_COMMENT',
+        type: ADD_COMMENT,
         payload
     })
 })

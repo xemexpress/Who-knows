@@ -5,35 +5,38 @@ import { Link } from 'react-router'
 import ListErrors from './ListErrors'
 import agent from '../agent'
 
+import {
+    UPDATE_FIELD_AUTH,
+    LOGIN,
+    LOGIN_PAGE_UNLOADED
+} from '../constants'
+
 const mapStateToProps = state => ({
     ...state.auth
 })
 
 const mapDispatchToProps = dispatch => ({
-    onChangeUsername: value => dispatch({
-        type: 'UPDATE_FIELD_AUTH',
-        key: 'username',
-        value
-    }),
-    onChangePassword: value => dispatch({
-        type: 'UPDATE_FIELD_AUTH',
-        key: 'password',
+    onUpdateField: (key, value) => dispatch({
+        type: UPDATE_FIELD_AUTH,
+        key,
         value
     }),
     onSubmit: (username, password) => dispatch({
-        type: 'LOGIN',
+        type: LOGIN,
         payload: agent.Auth.login(username, password)
     }),
     onUnload: () => dispatch({
-        type: 'LOGIN_PAGE_UNLOADED'
+        type: LOGIN_PAGE_UNLOADED
     })
 })
 
 class Login extends React.Component {
     constructor(){
         super()
-        this.changeUsername = ev => this.props.onChangeUsername(ev.target.value)
-        this.changePassword = ev => this.props.onChangePassword(ev.target.value)
+        const updateFieldEvent = key => ev => this.props.onUpdateField(key, ev.target.value)
+        this.changeUsername = updateFieldEvent('username')
+        this.changePassword = updateFieldEvent('password')
+        
         this.submitForm = (username, password) => ev => {
             ev.preventDefault()
             this.props.onSubmit(username, password)

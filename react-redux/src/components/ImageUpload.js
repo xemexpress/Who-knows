@@ -9,7 +9,7 @@ import {
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
     CLOUDINARY_UPLOAD_PRESET
-} from '../constants/imageUploads'
+} from '../constants'
 
 class ImageUpload extends React.Component {
     constructor(){

@@ -4,6 +4,12 @@ import { connect } from 'react-redux'
 import ArticleList from './ArticleList'
 import agent from '../agent'
 
+import {
+    PROFILE_PAGE_LOADED,
+    SET_PAGE,
+    PROFILE_PAGE_UNLOADED
+} from '../constants'
+
 const mapStateToProps = state => ({
     ...state.articleList,
     profile: state.profile
@@ -11,16 +17,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onLoad: payload => dispatch({
-        type: 'PROFILE_PAGE_LOADED',
+        type: PROFILE_PAGE_LOADED,
         payload
     }),
     onSetPage: (p, payload) => dispatch({
-        type: 'SET_PAGE',
+        type: SET_PAGE,
         page: p,
         payload
     }),
     onUnload: () => dispatch({
-        type: 'PROFILE_PAGE_UNLOADED'
+        type: PROFILE_PAGE_UNLOADED
     })
 })
 

@@ -5,6 +5,11 @@ import ListErrors from './ListErrors'
 import ImageUpload from './ImageUpload'
 import agent from '../agent'
 
+import {
+    SETTINGS_SAVED,
+    LOGOUT
+} from '../constants'
+
 class SettingsForm extends React.Component {
     constructor(){
         super()
@@ -85,52 +90,56 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onSubmitForm: user => dispatch({
-        type: 'SETTINGS_SAVED',
+        type: SETTINGS_SAVED,
         payload: agent.Auth.save(user)
     }),
     onClickLogout: () => dispatch({
-        type: 'LOGOUT'
+        type: LOGOUT
     })
 })
 
 class Settings extends React.Component {
     render(){
-        return (
-            <div className='settings-page'>
-                <div className='container page'>
-                    <div className='row'>
-                        <div className='col-md-6 offset-md-3 col-xs-12'>
-                            <div className='text-xs-center'>
-                                <h1>Your Settings</h1>
-                                <div className='row'>
-                                    <div className='offset-sm-4 col-sm-4 offset-xs-3 col-xs-6'>
-                                        <img
-                                        className='img-fluid'
-                                        src={this.props.currentUser.image}
-                                        alt={this.props.currentUser.username} />
+        const currentUser = this.props.currentUser
+        if(currentUser){
+            return (
+                <div className='settings-page'>
+                    <div className='container page'>
+                        <div className='row'>
+                            <div className='col-md-6 offset-md-3 col-xs-12'>
+                                <div className='text-xs-center'>
+                                    <h1>Your Settings</h1>
+                                    <div className='row'>
+                                        <div className='offset-sm-4 col-sm-4 offset-xs-3 col-xs-6'>
+                                            <img
+                                            className='img-fluid'
+                                            src={this.props.currentUser.image}
+                                            alt={this.props.currentUser.username} />
+                                        </div>
                                     </div>
                                 </div>
+                                
+                                <ListErrors errors={this.props.errors} />
+    
+                                <SettingsForm
+                                    currentUser={this.props.currentUser}
+                                    onSubmitForm={this.props.onSubmitForm} />
+    
+                                <hr />
+    
+                                <button
+                                    className='btn btn-outline-danger'
+                                    onClick={this.props.onClickLogout}>
+                                    Or click here to logout
+                                </button>
+    
                             </div>
-                            
-                            <ListErrors errors={this.props.errors} />
-
-                            <SettingsForm
-                                currentUser={this.props.currentUser}
-                                onSubmitForm={this.props.onSubmitForm} />
-
-                            <hr />
-
-                            <button
-                                className='btn btn-outline-danger'
-                                onClick={this.props.onClickLogout}>
-                                Or click here to logout
-                            </button>
-
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        return null
     }
 }
 

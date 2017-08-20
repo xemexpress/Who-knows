@@ -1,6 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router'
 
+import {
+    ADMIN_LIST
+} from '../constants'
+
 const LoggedOutView = props => {
     if(!props.currentUser){
         return (
@@ -28,7 +32,7 @@ const LoggedInView = props => {
         return (
             <ul className='nav navbar-nav pull-xs-right'>
                 {
-                    ['testtest'].indexOf(props.currentUser.username) !== -1 ?
+                    ADMIN_LIST.indexOf(props.currentUser.username) !== -1 ?
                         <span>
                             <li className='nav-item'>
                                 <Link to='editor' className='nav-link'>

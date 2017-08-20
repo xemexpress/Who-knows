@@ -3,13 +3,18 @@ import { connect } from 'react-redux'
 
 import agent from '../../agent'
 
+import {
+    UPDATE_COMMENT,
+    DELETE_COMMENT
+} from '../../constants'
+
 const CommentActions = props => {
     if(props.show){
         return (
             <span className='mod-options'>
                 {/* Delete Button */}
                 <i className='ion-trash-a' onClick={props.del}></i>
-
+                &nbsp;&nbsp;&nbsp;
                 {/* Update-Submit Button */}
                 {
                     props.canEdit ?
@@ -30,11 +35,11 @@ const CommentActions = props => {
 
 const mapDispatchToProps = dispatch => ({
     onUpdate: payload => dispatch({
-        type: 'UPDATE_COMMENT',
+        type: UPDATE_COMMENT,
         payload
     }),
     onDel: (payload, commentId) => dispatch({
-        type: 'DELETE_COMMENT',
+        type: DELETE_COMMENT,
         payload,
         commentId
     })

@@ -4,26 +4,33 @@ import { connect } from 'react-redux'
 import ListErrors from './ListErrors'
 import agent from '../agent'
 
+import {
+    EDITOR_PAGE_LOADED,
+    UPDATE_FIELD_EDITOR,
+    ARTICLE_SUBMITTED,
+    EDITOR_PAGE_UNLOADED
+} from '../constants'
+
 const mapStateToProps = state => ({
     ...state.editor
 })
 
 const mapDispatchToProps = dispatch => ({
     onLoad: payload => dispatch({
-        type: 'EDITOR_PAGE_LOADED',
+        type: EDITOR_PAGE_LOADED,
         payload
     }),
     onUpdateField: (key, value) => dispatch({
-        type: 'UPDATE_FIELD_EDITOR',
+        type: UPDATE_FIELD_EDITOR,
         key,
         value
     }),
     onSubmit: payload => dispatch({
-        type: 'ARTICLE_SUBMITTED',
+        type: ARTICLE_SUBMITTED,
         payload
     }),
     onUnload: () => dispatch({
-        type: 'EDITOR_PAGE_UNLOADED'
+        type: EDITOR_PAGE_UNLOADED
     })
 })
 

@@ -4,9 +4,13 @@ import { Link } from 'react-router'
 
 import agent from '../../agent'
 
+import {
+    DELETE_ARTICLE
+} from '../../constants'
+
 const mapDispatchToProps = dispatch =>({
     onDel: payload => dispatch({
-        type: 'DELETE_ARTICLE',
+        type: DELETE_ARTICLE,
         payload
     })
 })

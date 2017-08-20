@@ -1,5 +1,9 @@
+import {
+    APP_NAME
+} from '../constants'
+
 const defaultState = {
-    appName: 'Who knows',
+    appName: APP_NAME,
     token: null
 }
 

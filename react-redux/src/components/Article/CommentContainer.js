@@ -4,12 +4,6 @@ import { Link } from 'react-router'
 import CommentInput from './CommentInput'
 import CommentList from './CommentList'
 
-// class CommentContainer extends React.Component {
-//     render(){
-//         return null
-//     }
-// }
-
 const CommentContainer = props => {
     return (
         <div className='col-xs-12 col-md-8 offset-md-2'>

@@ -1,10 +1,12 @@
 import superagentPromise from 'superagent-promise'
 import _superagent from 'superagent'
 
-const superagent = superagentPromise(_superagent, global.Promise)
+import {
+    PER_PAGE,
+    API_ROOT
+} from './constants'
 
-const API_ROOT = 'http://localhost:3000/api'
-// const API_ROOT = 'https://safe-crag-15458.herokuapp.com/api'
+const superagent = superagentPromise(_superagent, global.Promise)
 
 const responseBody = res => res.body
 
@@ -31,11 +33,11 @@ const encode = encodeURIComponent
 const omitSlug = article => Object.assign(article, { slug: undefined })
 const Articles = {
     all: page =>
-        requests.get(`/articles?${limit(3, page)}`),
+        requests.get(`/articles?${limit(PER_PAGE, page)}`),
     get: slug =>
         requests.get(`/articles/${encode(slug)}`),
     postedBy: (username, page) =>
-        requests.get(`/articles?author=${encode(username)}&${limit(3, page)}`),
+        requests.get(`/articles?author=${encode(username)}&${limit(PER_PAGE, page)}`),
     create: article =>
         requests.post('/articles', { article }),
     update: article =>

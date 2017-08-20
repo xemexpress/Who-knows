@@ -4,13 +4,17 @@ import { connect } from 'react-redux'
 import ArticleList from '../ArticleList'
 import agent from '../../agent'
 
+import {
+    SET_PAGE
+} from '../../constants'
+
 const mapStateToProps = state => ({
     ...state.articleList
 })
 
 const mapDispatchToProps = dispatch => ({
     onSetPage: p => dispatch({
-        type: 'SET_PAGE',
+        type: SET_PAGE,
         page: p,
         payload: agent.Articles.all(p)
     })
