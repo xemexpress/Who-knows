@@ -125,6 +125,7 @@ router.delete('/:article', auth.required, function(req, res, next){
     User.findById(req.payload.id).then(function(){
         if(req.article.author._id.toString() === req.payload.id.toString()){
             return req.article.remove().then(function(){
+                Comment.remove({ article: req.article._id }).exec()
                 return res.sendStatus(204)
             })
         }else{
@@ -188,7 +189,6 @@ router.put('/:article/comments/:comment', auth.required, function(req, res, next
 
 // Delete comment
 router.delete('/:article/comments/:comment', auth.required, function(req, res, next){
-    // author is not populated yet, hence it's still an ObjectId
     if(req.comment.author._id.toString() === req.payload.id.toString()){
         req.article.comments.remove(req.comment._id)
         req.article.save()
