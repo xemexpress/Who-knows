@@ -27,20 +27,21 @@ const requests = {
 }
 
 const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`
+const encode = encodeURIComponent
 const omitSlug = article => Object.assign(article, { slug: undefined })
 const Articles = {
     all: page =>
         requests.get(`/articles?${limit(3, page)}`),
     get: slug =>
-        requests.get(`/articles/${slug}`),
+        requests.get(`/articles/${encode(slug)}`),
     postedBy: (username, page) =>
-        requests.get(`/articles?author=${username}&${limit(3, page)}`),
+        requests.get(`/articles?author=${encode(username)}&${limit(3, page)}`),
     create: article =>
         requests.post('/articles', { article }),
     update: article =>
-        requests.put(`/articles/${article.slug}`, { article: omitSlug(article) }),
+        requests.put(`/articles/${encode(article.slug)}`, { article: omitSlug(article) }),
     del: slug =>
-        requests.del(`/articles/${slug}`)
+        requests.del(`/articles/${encode(slug)}`)
 }
 
 const Auth = {
@@ -56,13 +57,13 @@ const Auth = {
 
 const Comments = {
     forArticle: slug =>
-        requests.get(`/articles/${slug}/comments`),
+        requests.get(`/articles/${encode(slug)}/comments`),
     create: (slug, comment) =>
-        requests.post(`/articles/${slug}/comments`, { comment }),
+        requests.post(`/articles/${encode(slug)}/comments`, { comment }),
     update: (slug, commentId, comment) =>
-        requests.put(`/articles/${slug}/comments/${commentId}`, { comment }),
+        requests.put(`/articles/${encode(slug)}/comments/${commentId}`, { comment }),
     delete: (slug, commentId) =>
-        requests.del(`/articles/${slug}/comments/${commentId}`)
+        requests.del(`/articles/${encode(slug)}/comments/${commentId}`)
 }
 
 const Profile = {
