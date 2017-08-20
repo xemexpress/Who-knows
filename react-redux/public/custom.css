@@ -1,3 +1,11 @@
 .navbar {
     background-color: #FFF;
 }
+
+.navbar-brand {
+    color: #333 !important;
+}
+
+.home-page .banner {
+    background-color: #333;
+}
