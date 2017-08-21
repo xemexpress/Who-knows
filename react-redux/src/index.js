@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import registerServiceWorker from './registerServiceWorker';
+import ReactGA from 'react-ga'
+import registerServiceWorker from './registerServiceWorker'
 
 import App from './components/App'
 import Home from './components/Home'
@@ -15,9 +16,19 @@ import Profile from './components/Profile'
 import Editor from './components/Editor'
 import store from './store'
 
+import {
+    GA_TRACKING_ID
+} from './constants'
+
+ReactGA.initialize(GA_TRACKING_ID)
+
+function fireTracking() {
+    ReactGA.pageview(window.location.hash);
+}
+
 ReactDOM.render((
     <Provider store={store}>
-        <Router history={hashHistory}>
+        <Router onUpdate={fireTracking} history={hashHistory}>
             <Route path='/' component={App}>
                 <IndexRoute component={Home} />
                 <Route path='intro' component={Intro} />
