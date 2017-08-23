@@ -1,4 +1,4 @@
-imprt {
+import {
     SETTINGS_SAVED,
     ASYNC_START
 } from '../constants'

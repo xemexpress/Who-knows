@@ -5,17 +5,22 @@ import Banner from './Banner'
 import MainView from './MainView'
 import agent from '../../agent'
 
+import {
+    HOME_PAGE_LOADED,
+    HOME_PAGE_UNLOADED
+} from '../../constants'
+
 const mapStateToProps = state => ({
     appName: state.common.appName
 })
 
 const mapDispatchToProps = dispatch => ({
     onLoad: payload => dispatch({
-        type: 'HOME_PAGE_LOADED',
+        type: HOME_PAGE_LOADED,
         payload
     }),
     onUnload: payload => dispatch({
-        type: 'HOME_PAGE_UNLOADED',
+        type: HOME_PAGE_UNLOADED,
         payload
     })
 })
