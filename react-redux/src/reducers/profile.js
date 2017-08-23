@@ -1,10 +1,15 @@
+import {
+    PROFILE_PAGE_LOADED,
+    PROFILE_PAGE_UNLOADED
+} from '../constants'
+
 export default (state = {}, action) => {
     switch(action.type){
-        case 'PROFILE_PAGE_LOADED':
+        case PROFILE_PAGE_LOADED:
             return {
                 ...action.payload[0].profile
             }
-        case 'PROFILE_PAGE_UNLOADED':
+        case PROFILE_PAGE_UNLOADED:
             return {}
         default:
     }

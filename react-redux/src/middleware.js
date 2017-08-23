@@ -1,9 +1,16 @@
 import agent from './agent'
 
+import {
+    ASYNC_START,
+    REGISTER,
+    LOGIN,
+    LOGOUT
+} from './constants'
+
 const promiseMiddleware = store => next => action => {
     if(isPromise(action.payload)){
         store.dispatch({
-            type: 'ASYNC_START',
+            type: ASYNC_START,
             subtype: action.type
         })
 
@@ -30,12 +37,12 @@ function isPromise(v){
 }
 
 const localStorageMiddleware = store => next => action => {
-    if(action.type === 'REGISTER' || action.type === 'LOGIN'){
+    if(action.type === REGISTER || action.type === LOGIN){
         if(!action.error){
             window.localStorage.setItem('jwt', action.payload.user.token)
             agent.setToken(action.payload.user.token)
         }
-    }else if(action.type === 'LOGOUT'){
+    }else if(action.type === LOGOUT){
         window.localStorage.setItem('jwt', '')
         agent.setToken(null)
     }

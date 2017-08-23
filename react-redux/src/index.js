@@ -22,8 +22,12 @@ import {
 
 ReactGA.initialize(GA_TRACKING_ID)
 
-function fireTracking() {
-    ReactGA.pageview(window.location.hash);
+function fireTracking(){
+    ReactGA.set({
+        useId: 523,
+        page: window.location.hash
+    })
+    ReactGA.pageview(window.location.hash)
 }
 
 ReactDOM.render((

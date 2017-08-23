@@ -1,5 +1,13 @@
 import {
-    APP_NAME
+    APP_NAME,
+    APP_LOAD,
+    REDIRECT,
+    LOGIN,
+    REGISTER,
+    LOGOUT,
+    SETTINGS_SAVED,
+    ARTICLE_SUBMITTED,
+    DELETE_ARTICLE
 } from '../constants'
 
 const defaultState = {
@@ -9,40 +17,40 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
     switch(action.type){
-        case 'APP_LOAD':
+        case APP_LOAD:
             return {
                 ...state,
                 appLoaded: true,
                 token: action.token || null,
                 currentUser: action.payload ? action.payload.user : null
             }
-        case 'REDIRECT':
+        case REDIRECT:
             return {
                 ...state,
                 redirectTo: null
             }
-        case 'LOGIN':
-        case 'REGISTER':
+        case LOGIN:
+        case REGISTER:
             return {
                 ...state,
                 redirectTo: action.error ? null : '/',
                 token: action.error ? null : action.payload.user.token,
                 currentUser: action.error ? null : action.payload.user
             }
-        case 'LOGOUT':
+        case LOGOUT:
             return {
                 ...state,
                 redirectTo: '/',
                 token: null,
                 currentUser: null
             }
-        case 'SETTINGS_SAVED':
+        case SETTINGS_SAVED:
             return {
                 ...state,
                 redirectTo: action.error ? null : '/',
                 currentUser: action.error ? state.currentUser : action.payload.user
             }
-        case 'ARTICLE_SUBMITTED':
+        case ARTICLE_SUBMITTED:
             if(action.error){
                 return state
             }
@@ -51,7 +59,7 @@ export default (state = defaultState, action) => {
                 ...state,
                 redirectTo: redirectUrl
             }
-        case 'DELETE_ARTICLE':
+        case DELETE_ARTICLE:
             return {
                 ...state,
                 redirectTo: '/'

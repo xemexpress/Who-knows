@@ -1,5 +1,6 @@
 // General
 export const APP_LOAD = 'APP_LOAD'
+export const ASYNC_START = 'ASYNC_START'
 export const REDIRECT = 'REDIRECT'
 export const SET_PAGE = 'SET_PAGE'
 
