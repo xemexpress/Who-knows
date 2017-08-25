@@ -9,3 +9,20 @@
 .home-page .banner {
     background-color: #333;
 }
+
+/* Animation - Loading */
+/* Safari 4.0 - 8.0 */
+.loading {
+    -webkit-animation: appearing 1.1s ease-in-out infinite alternate; /* Safari 4.0 - 8.0 */
+    animation: appearing 1.1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes appearing {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes appearing {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
