@@ -8,7 +8,8 @@ import agent from '../agent'
 import {
     UPDATE_FIELD_AUTH,
     REGISTER,
-    REGISTER_PAGE_UNLOADED
+    LOGIN,
+    AUTH_PAGE_UNLOADED
 } from '../constants'
 
 const mapStateToProps = state => ({
@@ -16,21 +17,27 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    onUpdateField: (key, value) => dispatch({
-        type: UPDATE_FIELD_AUTH,
-        key,
-        value
-    }),
-    onSubmit: (username, password) => dispatch({
+    onUpdateField: (key, value) => {
+        dispatch({
+            type: UPDATE_FIELD_AUTH,
+            key,
+            value
+        })
+    },
+    onRegSubmit: (username, password) => dispatch({
         type: REGISTER,
         payload: agent.Auth.register(username, password)
     }),
+    onLogSubmit: (username, password) => dispatch({
+        type: LOGIN,
+        payload: agent.Auth.login(username, password)
+    }),
     onUnload: () => dispatch({
-        type: REGISTER_PAGE_UNLOADED
+        type: AUTH_PAGE_UNLOADED
     })
 })
-
-class Register extends React.Component {
+ 
+class Auth extends React.Component {
     constructor(){
         super()
         this.state = {
@@ -43,12 +50,26 @@ class Register extends React.Component {
         
         this.submitForm = (username, password) => ev => {
             ev.preventDefault()
-            if(this.props.confirm === this.props.password){
-                this.setState({ error: '' })
-                this.props.onSubmit(username, password)
+
+            if(this.props.route.path === 'register'){
+                // Register
+                if(this.props.confirm === this.props.password){
+                    this.setState({ error: '' })
+                    this.props.onRegSubmit(username, password)
+                }else{
+                    this.setState({ error: 'Please confirm your password again:)' })
+                }
             }else{
-                this.setState({ error: 'Please confirm your password again:)' })
+                // Log in
+                this.props.onLogSubmit(username, password)
             }
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.route.path !== nextProps.route.path){
+            this.setState({ error: '' })
+            this.props.onUnload()
         }
     }
 
@@ -58,25 +79,32 @@ class Register extends React.Component {
 
     render(){
         const { username, password, confirm } = this.props
-
+        
         return (
             <div className='auth-page'>
                 <div className='container page'>
                     <div className='row'>
                         
                         <div className='col-md-6 offset-md-3 col-xs-12'>
-                            <h1 className='text-xs-center'>Sign up</h1>
+                            <h1 className='text-xs-center'>
+                                {
+                                    this.props.route.path === 'register' ?
+                                    'Sign up'
+                                    : 'Sign In'
+                                }
+                            </h1>
                             <p className='text-xs-center'>
-                                <Link to='login'>
-                                    Have an account?
-                                </Link>
+                                {
+                                    this.props.route.path === 'register' ?
+                                    <Link to='login'>Have an account?</Link>
+                                    : <Link to='register'>Need an account?</Link>
+                                }
                             </p>
 
-                            <ListErrors errors={this.props.errors} />
                             {
                                 this.state.error ?
                                 <ul className='error-messages'><li>{this.state.error}</li></ul>
-                                : null
+                                : <ListErrors errors={this.props.errors} />
                             }
 
                             <form onSubmit={this.submitForm(username, password)}>
@@ -100,20 +128,28 @@ class Register extends React.Component {
                                             onChange={this.changePassword} />
                                     </fieldset>
 
-                                    <fieldset className='form-group'>
-                                        <input
-                                            className='form-control form-control-log'
-                                            type='password'
-                                            placeholder='Confirm Password'
-                                            value={confirm}
-                                            onChange={this.changeConfirm} />
-                                    </fieldset>
+                                    {
+                                        this.props.route.path === 'register' ?
+                                        <fieldset className='form-group'>
+                                            <input
+                                                className='form-control form-control-log'
+                                                type='password'
+                                                placeholder='Confirm Password'
+                                                value={confirm}
+                                                onChange={this.changeConfirm} />
+                                        </fieldset>
+                                        : null
+                                    }
 
                                     <button
                                         className='btn btn-lg btn-primary pull-xs-right'
                                         type='submit'
                                         disabled={this.props.inProgress}>
-                                        Sign up
+                                        {
+                                            this.props.route.path === 'register' ?
+                                            'Sign up'
+                                            : 'Sign in'
+                                        }
                                     </button>
                                 </fieldset>
                             </form>
@@ -125,4 +161,4 @@ class Register extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)

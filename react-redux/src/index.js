@@ -8,8 +8,7 @@ import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import Home from './components/Home'
 import Intro from './components/Intro'
-import Login from './components/Login'
-import Register from './components/Register'
+import Auth from './components/Auth'
 import Settings from './components/Settings'
 import Article from './components/Article'
 import Profile from './components/Profile'
@@ -36,8 +35,8 @@ ReactDOM.render((
             <Route path='/' component={App}>
                 <IndexRoute component={Home} />
                 <Route path='intro' component={Intro} />
-                <Route path='login' component={Login} />
-                <Route path='register' component={Register} />
+                <Route path='login' component={Auth} />
+                <Route path='register' component={Auth} />
                 <Route path='settings' component={Settings} />
                 <Route path='article/:id' component={Article} />
                 <Route path='@:username' component={Profile} />

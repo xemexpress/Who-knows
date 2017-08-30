@@ -6,10 +6,9 @@ export const SET_PAGE = 'SET_PAGE'
 
 // Auth
 export const LOGIN = 'LOGIN'
-export const LOGIN_PAGE_UNLOADED = 'LOGIN_PAGE_UNLOADED'
 export const REGISTER = 'REGISTER'
-export const REGISTER_PAGE_UNLOADED = 'REGISTER_PAGE_UNLOADED'
 export const UPDATE_FIELD_AUTH = 'UPDATE_FIELD_AUTH'
+export const AUTH_PAGE_UNLOADED = 'AUTH_PAGE_UNLOADED'
 export const LOGOUT = 'LOGOUT'
 
 // Home
