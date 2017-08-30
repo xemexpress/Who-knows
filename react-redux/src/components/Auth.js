@@ -89,7 +89,7 @@ class Auth extends React.Component {
                             <h1 className='text-xs-center'>
                                 {
                                     this.props.route.path === 'register' ?
-                                    'Sign up'
+                                    'Sign Up'
                                     : 'Sign In'
                                 }
                             </h1>
