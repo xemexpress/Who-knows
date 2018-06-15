@@ -21,8 +21,8 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 appLoaded: true,
-                token: action.token || null,
-                currentUser: action.payload ? action.payload.user : null
+                token: action.token ? action.error ? null : action.payload.user.token : null,
+                currentUser: action.payload ? action.error ? null : action.payload.user : null
             }
         case REDIRECT:
             return {
